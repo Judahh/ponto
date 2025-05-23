@@ -1,15 +1,19 @@
 {
+    "engines": {
+        "node": "22.x"
+    },
     "scripts": {
-      "build": "tsc",
-      "dev": "vercel dev",
-      "start": "vercel dev"
+        "build": "tsc",
+        "dev": "",
+        "start": "vercel dev"
     },
     "dependencies": {
-      "playwright": "^1.52.0",
-      "playwright-aws-lambda": "0.11.0"
+        "playwright": "^1.52.0",
+        "playwright-aws-lambda": "0.11.0"
     },
     "devDependencies": {
-      "@types/node": "^22.15.21",
-      "typescript": "^5.8.3"
+        "@types/node": "^22.15.21",
+        "@vercel/node": "^5.1.16",
+        "typescript": "^5.8.3"
     }
 }

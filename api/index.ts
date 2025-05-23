@@ -1,4 +1,4 @@
-import { NowRequest, NowResponse } from '@vercel/node';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import { registrarPonto } from './ponto';
 
 function getLatitude(username: string){
@@ -11,7 +11,7 @@ function getLongitude(username: string){
     return long || undefined;
 }
 
-export default async function handler(req: NowRequest, res: NowResponse) {
+export default function handler(req: VercelRequest, res: VercelResponse) {
   const { username, url, latitude, longitude } = req.query;
 
   if (!username || typeof username !== 'string') {
