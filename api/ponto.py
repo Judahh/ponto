@@ -29,11 +29,12 @@ def get_password(username):
     Função para obter a senha do usuário a partir de um arquivo .env.
     """
     load_dotenv()
+    print("Carregando variáveis de ambiente...")
+    print(username)
     cloned_username = username.replace('.', '_')
     password = os.getenv(username)
     if password is None:
         # check if replacing '.' with '_'
-        # if username has '.' replace with '_'
         password = os.getenv(cloned_username)
 
     if password is None:
@@ -52,11 +53,9 @@ def get_location(username):
     cloned_username = username.replace('.', '_')
     if latitude is None:
         # check if replacing '.' with '_'
-        # if username has '.' replace with '_'
         latitude = os.getenv(cloned_username+'_LATITUDE')
     if longitude is None:
         # check if replacing '.' with '_'
-        # if username has '.' replace with '_'
         longitude = os.getenv(cloned_username+'LONGITUDE')
     if latitude is None:
         latitude = "-15.821305"
@@ -68,7 +67,7 @@ def get_location(username):
 def registrar_ponto(username, url):
     password = get_password(username)
     agora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(f"Registrando ponto às {agora} (Dia da semana: {datetime.now().strftime('%A')})")
+    print(f"{username} registrando ponto às {agora} (Dia da semana: {datetime.now().strftime('%A')})")
     # Configuração do Chrome
     chrome_options = Options()
     chrome_options.add_argument("--no-sandbox")
