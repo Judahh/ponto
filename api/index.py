@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
 # import registrar_ponto
-from ponto import registrar_ponto
+from api.ponto import registrar_ponto
 # import libs for query params
 
 class handler(BaseHTTPRequestHandler):
