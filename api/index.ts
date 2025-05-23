@@ -21,7 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const result = await registrarPonto(
     username,
     // get url or get from env
-    url || process.env.URL as string,
+    (url || process.env.URL) as unknown as string,
     latitude || getLatitude(username) || "-15.7417317027277",
     longitude || getLongitude(username) || "-47.914133845299254",
   );

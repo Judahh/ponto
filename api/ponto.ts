@@ -11,10 +11,10 @@ export async function registrarPonto(username: string, url: string, latitude?: s
   try {
     const browser =  await playwright.launchChromium();
     const context = await browser.newContext();
-    const page = await context.newPage();
+    const page = (await context.newPage()) as any;
 
-    await page.evaluateOnNewDocument((lat, lon) => {
-        navigator.geolocation.getCurrentPosition = function (success) {
+    await page.evaluateOnNewDocument((lat?: string | number, lon?: string | number) => {
+        navigator.geolocation.getCurrentPosition = function (success: any) {
           success({
             coords: {
               latitude: lat,
