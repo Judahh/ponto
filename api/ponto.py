@@ -41,30 +41,33 @@ def get_password(username):
         raise ValueError(f"Senha não encontrada para o usuário: {username}")
     return password
 
-def get_location(username):
+def get_latitude(username):
     """
-    Função para obter a localização do usuário.
-    Retorna a latitude e longitude.
+    Função para obter a latitude
     """
-    # Exemplo de coordenadas (latitude, longitude)
-    #load_dotenv()
     latitude = os.getenv(username+'_LATITUDE')
-    longitude = os.getenv(username+'LONGITUDE')
     cloned_username = username.replace('.', '_')
     if latitude is None:
         # check if replacing '.' with '_'
         latitude = os.getenv(cloned_username+'_LATITUDE')
+    if latitude is None:
+        latitude = "-15.821305"
+    return latitude
+
+def get_longitude(username):
+    """
+    Função para obter a longitude.
+    """
+    longitude = os.getenv(username+'LONGITUDE')
+    cloned_username = username.replace('.', '_')
     if longitude is None:
         # check if replacing '.' with '_'
         longitude = os.getenv(cloned_username+'LONGITUDE')
-    if latitude is None:
-        latitude = "-15.821305"
     if longitude is None:
         longitude = "-47.893889"
-    # set latitude and longitude to float
-    return latitude, longitude
+    return longitude
  
-def registrar_ponto(username, url):
+def registrar_ponto(username, url, latitude=None, longitude=None):
     password = get_password(username)
     agora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print(f"{username} registrando ponto às {agora} (Dia da semana: {datetime.now().strftime('%A')})")
@@ -85,7 +88,10 @@ def registrar_ponto(username, url):
             document.head.appendChild(script);
         """)
 
-        latitude, longitude = get_location(username)
+        if latitude is None:
+            latitude = get_latitude(username)
+        if longitude is None:
+            longitude = get_longitude(username)
 
         print(f"Latitude: {latitude}, Longitude: {longitude}")
 

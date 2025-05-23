@@ -15,9 +15,13 @@ class handler(BaseHTTPRequestHandler):
         params = dict(param.split('=') for param in query.split('&') if '=' in param)
         username = params.get('username')
         url = params.get('url')
+        latitude = params.get('latitude')
+        longitude = params.get('longitude')
         print(f"Received username: {username}")
         print(f"Received url: {url}")
-        response = registrar_ponto(username=username, url=url)
+        print(f"Received latitude: {latitude}")
+        print(f"Received longitude: {longitude}")
+        response = registrar_ponto(username=username, url=url, latitude=latitude, longitude=longitude)
         # if has no error in response
         if response.get('error') is None:
             self.send_response(200)
