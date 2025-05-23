@@ -5,6 +5,14 @@ import time
 import warnings
 from datetime import datetime
 from pytz import timezone
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
  
 load_dotenv()
  
@@ -21,16 +29,41 @@ def get_password(username):
     Função para obter a senha do usuário a partir de um arquivo .env.
     """
     load_dotenv()
+    cloned_username = username.replace('.', '_')
     password = os.getenv(username)
     if password is None:
         # check if replacing '.' with '_'
         # if username has '.' replace with '_'
-        username = username.replace('.', '_')
-        password = os.getenv(username)
+        password = os.getenv(cloned_username)
 
     if password is None:
         raise ValueError(f"Senha não encontrada para o usuário: {username}")
     return password
+
+def get_location(username):
+    """
+    Função para obter a localização do usuário.
+    Retorna a latitude e longitude.
+    """
+    # Exemplo de coordenadas (latitude, longitude)
+    load_dotenv()
+    latitude = os.getenv(username+'_LATITUDE')
+    longitude = os.getenv(username+'LONGITUDE')
+    cloned_username = username.replace('.', '_')
+    if latitude is None:
+        # check if replacing '.' with '_'
+        # if username has '.' replace with '_'
+        latitude = os.getenv(cloned_username+'_LATITUDE')
+    if longitude is None:
+        # check if replacing '.' with '_'
+        # if username has '.' replace with '_'
+        longitude = os.getenv(cloned_username+'LONGITUDE')
+    if latitude is None:
+        latitude = "-15.821305"
+    if longitude is None:
+        longitude = "-47.893889"
+    # set latitude and longitude to float
+    return latitude, longitude
  
 def registrar_ponto(username, url):
     password = get_password(username)
@@ -42,28 +75,39 @@ def registrar_ponto(username, url):
     chrome_options.add_argument("--disable-dev-shm-usage")
  
     # Inicializar o WebDriver
+    print("Iniciando o WebDriver...")
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     try:
         # Injetar a API Key do Google Maps
+        print("Injetando a API Key do Google Maps...")
         driver.execute_script(f"""
             var script = document.createElement('script');
             script.src = 'https://maps.googleapis.com/maps/api/js?key={google_maps_api_key}&libraries=places';
             document.head.appendChild(script);
         """)
- 
-        # Definir a geolocalização
-        driver.execute_script("""
+
+        latitude, longitude = get_location(username)
+
+        print(f"Latitude: {latitude}, Longitude: {longitude}")
+
+        script = """
             navigator.geolocation.getCurrentPosition = function(success) {
                 var position = {
                     coords: {
-                        latitude: -15.821305,
-                        longitude: -47.893889,
+                        latitude: """+latitude+""",
+                        longitude: """+longitude+""",
                         accuracy: 100
                     }
                 };
                 success(position);
             };
-        """)
+        """
+
+        print(script)
+ 
+        # Definir a geolocalização
+        driver.execute_script(script)
+        print("Geolocalização definida.")
  
         # Abrir a URL
         if url is None:
@@ -71,6 +115,7 @@ def registrar_ponto(username, url):
         driver.get(url)
         time.sleep(2)
  
+        print("Acessando a URL...")
         # Esperar até que o campo de nome de usuário esteja presente
         username_input = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'usuario'))
@@ -78,6 +123,7 @@ def registrar_ponto(username, url):
         password_input = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'senha'))
         )
+        print("Campos de login encontrados.")
         # Inserir credenciais
         username_input.clear()
         username_input.send_keys(username)
@@ -88,6 +134,7 @@ def registrar_ponto(username, url):
         password_input.send_keys(Keys.RETURN)
         time.sleep(2)  # Aguardar resposta do login
  
+        print("Login enviado.")
         # Esperar até que a página de destino carregue
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, 'btnRegistrar'))
