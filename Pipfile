@@ -10,8 +10,9 @@ beautifulsoup4 = "*"
 pytz = "*"
 selenium = "*"
 webdriver_manager = "*"
+webdriver-manager = "*"
 dotenv = "*"
-apscheduler = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.12"
