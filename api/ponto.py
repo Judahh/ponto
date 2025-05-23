@@ -10,8 +10,8 @@ def registrar_ponto(username, url, latitude=None, longitude=None):
     if url is None:
         url = os.getenv('URL')
 
-    latitude = float(latitude or os.getenv(username + '_LATITUDE') or -15.821305)
-    longitude = float(longitude or os.getenv(username + '_LONGITUDE') or -47.893889)
+    latitude = float(latitude or os.getenv(username + '_LATITUDE') or -15.7417317027277)
+    longitude = float(longitude or os.getenv(username + '_LONGITUDE') or -47.914133845299254)
 
     agora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
