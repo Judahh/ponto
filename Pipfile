@@ -13,6 +13,10 @@ webdriver_manager = "*"
 webdriver-manager = "*"
 dotenv = "*"
 python-dotenv = "*"
+playwright = "*"
 
 [requires]
 python_version = "3.12"
+
+[scripts]
+install_chrome = "sudo apt install wget && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb"
