@@ -13,8 +13,17 @@ export async function registrarPonto(username: string, url: string, latitude?: s
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    await context.overridePermissions(url, ['geolocation']);
-    await context.setGeolocation({ latitude, longitude });
+    await page.evaluateOnNewDocument((lat, lon) => {
+        navigator.geolocation.getCurrentPosition = function (success) {
+          success({
+            coords: {
+              latitude: lat,
+              longitude: lon,
+              accuracy: 100
+            }
+          });
+        };
+      }, latitude, longitude);
 
     await page.goto(url);
 
