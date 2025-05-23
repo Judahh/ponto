@@ -15,6 +15,8 @@ class handler(BaseHTTPRequestHandler):
         params = dict(param.split('=') for param in query.split('&') if '=' in param)
         username = params.get('username')
         url = params.get('url')
+        print(f"Received username: {username}")
+        print(f"Received url: {url}")
         response = registrar_ponto(username=username, url=url)
         # if has no error in response
         if response.get('error') is None:

@@ -1,5 +1,5 @@
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import ssl
 import time
 import warnings
@@ -14,7 +14,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
  
-load_dotenv()
+#load_dotenv()
  
 # Configurações de SSL
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -28,7 +28,7 @@ def get_password(username):
     """
     Função para obter a senha do usuário a partir de um arquivo .env.
     """
-    load_dotenv()
+    #load_dotenv()
     print("Carregando variáveis de ambiente...")
     print(username)
     cloned_username = username.replace('.', '_')
@@ -47,7 +47,7 @@ def get_location(username):
     Retorna a latitude e longitude.
     """
     # Exemplo de coordenadas (latitude, longitude)
-    load_dotenv()
+    #load_dotenv()
     latitude = os.getenv(username+'_LATITUDE')
     longitude = os.getenv(username+'LONGITUDE')
     cloned_username = username.replace('.', '_')
