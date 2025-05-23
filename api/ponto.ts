@@ -1,24 +1,16 @@
-import { chromium } from 'playwright-aws-lambda';
+import * as playwright from 'playwright-aws-lambda';
+
 
 function getPassword(username: string): string {
     const password = process.env[username] || process.env[username.replaceAll('.', '_')];
     return password || '';
     }
 
-export async function registrarPonto(username: string, url: string, latitude: string, longitude: string) {
+export async function registrarPonto(username: string, url: string, latitude?: string, longitude?: string) {
   const agora = new Date().toISOString();
-
   try {
-    const executablePath = await chromium.executablePath();
-    const headless = chromium.headless;
-
-    const browser = await chromium.puppeteer.launch({
-      executablePath: executablePath || undefined,
-      headless,
-      args: chromium.args
-    });
-
-    const context = await browser.createIncognitoBrowserContext();
+    const browser =  await playwright.launchChromium();
+    const context = await browser.newContext();
     const page = await context.newPage();
 
     await context.overridePermissions(url, ['geolocation']);
