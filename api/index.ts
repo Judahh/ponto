@@ -22,8 +22,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     username,
     // get url or get from env
     (url || process.env.URL) as unknown as string,
-    latitude || getLatitude(username) || "-15.7417317027277",
-    longitude || getLongitude(username) || "-47.914133845299254",
+    (latitude || getLatitude(username) || "-15.7417317027277") as unknown as string | undefined,
+    (longitude || getLongitude(username) || "-47.914133845299254") as unknown as string | undefined,
   );
 
   return res.status(result.error ? 500 : 200).json(result);
