@@ -11,7 +11,7 @@ function getLongitude(username: string){
     return long || undefined;
 }
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { username, url, latitude, longitude } = req.query;
 
   if (!username || typeof username !== 'string') {
