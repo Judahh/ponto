@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+ 
+[packages]
+flask = "*"
+requests = "*"
+beautifulsoup4 = "*"
+pytz = "*"
+selenium = "*"
+webdriver_manager = "*"
+dotenv = "*"
+apscheduler = "*"
+
+[requires]
+python_version = "3.12"
