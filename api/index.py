@@ -21,6 +21,19 @@ class handler(BaseHTTPRequestHandler):
         print(f"Received url: {url}")
         print(f"Received latitude: {latitude}")
         print(f"Received longitude: {longitude}")
+        if username is None:
+            self.send_response(200)
+            self.send_header('Content-type','application/json')
+            self.end_headers()
+            # send response as json
+            # service is working but username is not provided
+            response = {
+                "obs": "username is missing",
+                "status": "running",
+                "message": "service is running"
+            }
+            self.wfile.write(json.dumps(response).encode('utf-8'))
+            return
         response = registrar_ponto(username=username, url=url, latitude=latitude, longitude=longitude)
         # if has no error in response
         if response.get('error') is None:

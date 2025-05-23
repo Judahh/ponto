@@ -25,6 +25,8 @@ URL = os.getenv('URL')
 google_maps_api_key = os.getenv('GOOGLE_MAPS_API')
 
 def get_password(username):
+    if username is None:
+        raise ValueError("Nome de usuário não pode ser None")
     """
     Função para obter a senha do usuário a partir de um arquivo .env.
     """
@@ -45,6 +47,8 @@ def get_latitude(username):
     """
     Função para obter a latitude
     """
+    if username is None:
+        raise ValueError("Nome de usuário não pode ser None")
     latitude = os.getenv(username+'_LATITUDE')
     cloned_username = username.replace('.', '_')
     if latitude is None:
@@ -55,6 +59,8 @@ def get_latitude(username):
     return latitude
 
 def get_longitude(username):
+    if username is None:
+        raise ValueError("Nome de usuário não pode ser None")
     """
     Função para obter a longitude.
     """
