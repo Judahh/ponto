@@ -84,32 +84,37 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         // print page html
         const text = 'com sucesso.';
         // check if this text is appears in the page after clicking the button
-        const confirmation = (await (await (await (await page.waitForSelector('div.alert.alert-success.growl-animated', { timeout: 10000 })
-            .then(async (el: any) => await el.innerText)
-            .catch(() => {
-                console.log('Erro ao registrar ponto 1');
-                // wait for the text to appear anywhere in the page
-                return page.waitForSelector(`text=${text}`, { timeout: 10000 })
-                    .then(async (el: any) => await el.innerText)
-                    .catch(async () => {
-                        // get error message
-                        console.log('Erro ao registrar ponto 2');
-                        const geoError = await page.$('div.alert.alert-danger.growl-animated');
-                        if (geoError) {
-                            const errorText = await geoError.innerText();
-                            console.log('Erro de geolocalização:', errorText);
-                            return errorText;
-                        }
-                        return 'Erro ao registrar ponto';
+        let error;
+        let confirmation;
+        try {
+            const growlAnimated = await page.waitForSelector('div.alert.alert-success.growl-animated', { timeout: 10000 });
+            const growlAnimatedInnerText = await growlAnimated.innerText();
+        } catch (error) {
+            try {
+                const textSelector = await page.waitForSelector(`text=${text}`, { timeout: 10000 });
+                confirmation = await textSelector.innerText();
+            } catch (error) {
+                console.log('Erro ao registrar ponto 2');
+                try {
+                    const geoError = await page.$('div.alert.alert-danger.growl-animated');
+                    if (geoError) {
+                        error = await geoError.innerText();
+                        console.log('Erro de geolocalização:', errorText);
                     }
-                    );
-            })
-        ))));
+                    return 'Erro ao registrar ponto';
+                } catch (error) {
+                    error = 'Erro ao registrar ponto';
+                }
+                
+            }
+        }
+        
+            
         const html = await page.content();
         console.log(html);
         console.log('confirmation', confirmation);
 
-        if (confirmation.includes('Erro')) {
+        if (confirmation.includes('Erro') || error) {
             console.log('Erro');
             return {
                 usuario: username,
@@ -118,18 +123,6 @@ export async function registrarPonto(username: string, url: string, latitude?: s
                 confirmacao: confirmation
             };
         }
-
-        // console.log('div.alert.alert-success.growl-animated');
-
-        // // wait for the element to be visible
-        // // <div data-growl="container" class="alert alert-success gro wl-animated animated fadeInDown" role="alert" data-growl-position="top-right" style="position: fixed; margin: Opx; z-index: 1031; display: inline-block; top: 20px; right: 20 px;">@</div>
-        // const confirmation = await page.waitForSelector('div.alert.alert-success.growl-animated', { timeout: 10000 })
-        //     .then((el: any) => el.innerText)
-        //     .catch(() => {
-        //         return 'Erro ao registrar ponto';
-        //     });
-        // console.log('confirmation', confirmation);
-        // await page.waitForTimeout(1000);
 
         await browser.close();
 
