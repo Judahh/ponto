@@ -1,5 +1,8 @@
 import * as playwright from 'playwright-aws-lambda';
 
+import * as chromiumBinary from '@sparticuz/chromium';
+
+import { chromium } from 'playwright-core';
 
 function getPassword(username: string): string {
     const password = process.env[username] || process.env[username.replaceAll('.', '_')];
@@ -9,7 +12,17 @@ function getPassword(username: string): string {
 export async function registrarPonto(username: string, url: string, latitude?: string, longitude?: string) {
   const agora = new Date().toISOString();
   try {
-    const browser =  await playwright.launchChromium();
+    // const browser =  await playwright.launchChromium();
+    
+    const executablePath = await chromiumBinary.executablePath();
+
+        // launch browser with external Chromium
+    const browser = await chromium.launch({
+        args: chromiumBinary.args,
+        executablePath: executablePath,
+        headless: true,
+    });
+
     const context = await browser.newContext();
     const page = (await context.newPage()) as any;
 
