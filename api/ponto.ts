@@ -59,8 +59,16 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         await page.waitForSelector('#usuario');
         await page.waitForSelector('#senha');
 
+        console.log('Preenchendo o formulário...');
+
+        const password = getPassword(username);
+
         await page.fill('#usuario', username);
-        await page.fill('#senha', getPassword(username)); // TODO: Obter dinamicamente
+        await page.fill('#senha', password); // TODO: Obter dinamicamente
+
+        console.log("username", username);
+        console.log("password", password);
+        
 
         await page.keyboard.press('Enter');
 
