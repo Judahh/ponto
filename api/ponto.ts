@@ -84,7 +84,7 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         // print page html
         const text = 'com sucesso.';
         // check if this text is appears in the page after clicking the button
-        const confirmation = await (await page.waitForSelector('div.alert.alert-success.growl-animated', { timeout: 10000 })
+        const confirmation = (await (await (await (await page.waitForSelector('div.alert.alert-success.growl-animated', { timeout: 10000 })
             .then(async (el: any) => await el.innerText)
             .catch(() => {
                 console.log('Erro ao registrar ponto 1');
@@ -104,7 +104,7 @@ export async function registrarPonto(username: string, url: string, latitude?: s
                     }
                     );
             })
-        );
+        ))));
         const html = await page.content();
         console.log(html);
         console.log('confirmation', confirmation);
