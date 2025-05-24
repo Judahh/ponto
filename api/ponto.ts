@@ -67,6 +67,9 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         await page.waitForSelector('#btnRegistrar');
         await page.click('#btnRegistrar');
 
+        // print page html
+        const html = await page.content();
+        console.log(html);
         const text = 'com sucesso.';
         // check if this text is appears in the page after clicking the button
         const confirmation = await page.waitForSelector('div.alert.alert-success.growl-animated', { timeout: 10000 })
@@ -79,8 +82,10 @@ export async function registrarPonto(username: string, url: string, latitude?: s
                     .catch(() => {
                         console.log('Erro ao registrar ponto 2');
                         return 'Erro ao registrar ponto';
-                    });
-            });
+                    }
+                );
+            }
+        );
         console.log('confirmation', confirmation);
 
         // console.log('div.alert.alert-success.growl-animated');
