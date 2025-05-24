@@ -3,13 +3,13 @@
         "node": "22.x"
     },
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && npx playwright install",
         "dev": "",
         "start": "vercel dev"
     },
     "dependencies": {
-        "playwright-core": "^1.49.1",
-        "playwright-aws-lambda": "0.10.0"
+        "playwright-core": "^1.52.0",
+        "playwright-aws-lambda": "0.11.0"
     },
     "devDependencies": {
         "@types/node": "^22.15.21",
