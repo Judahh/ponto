@@ -8,9 +8,8 @@
         "start": "vercel dev"
     },
     "dependencies": {
-        "playwright": "^1.52.0",
-        "playwright-core": "^1.52.0",
-        "playwright-aws-lambda": "0.11.0"
+        "playwright-core": "^1.49.1",
+        "playwright-aws-lambda": "0.10.0"
     },
     "devDependencies": {
         "@types/node": "^22.15.21",
