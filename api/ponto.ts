@@ -14,7 +14,8 @@ export async function registrarPonto(username: string, url: string, latitude?: s
     const page = (await context.newPage()) as any;
 
     await page.evaluateOnNewDocument((lat?: string | number, lon?: string | number) => {
-        navigator.geolocation.getCurrentPosition = function (success: any) {
+        // @ts-ignore
+        (navigator as any).geolocation.getCurrentPosition = function (success: any) {
           success({
             coords: {
               latitude: lat,
