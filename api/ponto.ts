@@ -1,6 +1,9 @@
 import * as playwright from 'playwright-aws-lambda';
 
+// @ts-ignore
 import * as chromiumBinary from '@sparticuz/chromium';
+// @ts-ignore
+// const chromiumBinary = require('@sparticuz/chromium');
 
 import { chromium } from 'playwright-core';
 
