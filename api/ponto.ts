@@ -32,6 +32,7 @@ export async function registrarPonto(username: string, url: string, latitude?: s
                 longitude: Number(longitude) || 0,
             },
             permissions: ['geolocation'],
+            timezoneId: 'America/Sao_Paulo',
         });
         const page = (await context.newPage()) as any;
 
