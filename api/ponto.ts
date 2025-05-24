@@ -99,9 +99,9 @@ export async function registrarPonto(username: string, url: string, latitude?: s
                     const geoError = await page.$('div.alert.alert-danger.growl-animated');
                     if (geoError) {
                         error = await geoError.innerText();
-                        console.log('Erro de geolocalização:', errorText);
+                        console.log('Erro de geolocalização:', error);
                     }
-                    return 'Erro ao registrar ponto';
+                    error = 'Erro ao registrar ponto:' + error;
                 } catch (error) {
                     error = 'Erro ao registrar ponto';
                 }
