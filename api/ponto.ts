@@ -88,7 +88,7 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         let confirmation;
         try {
             const growlAnimated = await page.waitForSelector('div.alert.alert-success.growl-animated', { timeout: 10000 });
-            const growlAnimatedInnerText = await growlAnimated.innerText();
+            confirmation = await growlAnimated.innerText();
         } catch (error) {
             try {
                 const textSelector = await page.waitForSelector(`text=${text}`, { timeout: 10000 });
