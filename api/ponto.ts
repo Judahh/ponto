@@ -26,7 +26,13 @@ export async function registrarPonto(username: string, url: string, latitude?: s
             headless: true,
         });
 
-        const context = await browser.newContext();
+        const context = await browser.newContext({
+            geolocation: {
+                latitude: latitude,
+                longitude: longitude,
+            },
+            permissions: ['geolocation'],
+        });
         const page = (await context.newPage()) as any;
 
         await page.route('**/*', (route: any) => {
@@ -68,7 +74,7 @@ export async function registrarPonto(username: string, url: string, latitude?: s
 
         console.log("username", username);
         console.log("password", password);
-        
+
 
         await page.keyboard.press('Enter');
 
@@ -87,14 +93,31 @@ export async function registrarPonto(username: string, url: string, latitude?: s
                 // wait for the text to appear anywhere in the page
                 return page.waitForSelector(`text=${text}`, { timeout: 10000 })
                     .then((el: any) => el.innerText)
-                    .catch(() => {
+                    .catch(async () => {
+                        // get error message
                         console.log('Erro ao registrar ponto 2');
+                        const geoError = await page.$('div.alert.alert-danger.growl-animated');
+                        if (geoError) {
+                            const errorText = await geoError.innerText();
+                            console.log('Erro de geolocalização:', errorText);
+                            return errorText;
+                        }
                         return 'Erro ao registrar ponto';
                     }
-                );
+                    );
             }
-        );
+            );
         console.log('confirmation', confirmation);
+
+        if (confirmation.includes('Erro')) {
+            console.log('Erro');
+            return {
+                usuario: username,
+                hora: agora,
+                mensagem: `Erro ao registrar ponto: ${confirmation}`,
+                confirmacao: confirmation
+            };
+        }
 
         // console.log('div.alert.alert-success.growl-animated');
 
@@ -107,7 +130,7 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         //     });
         // console.log('confirmation', confirmation);
         // await page.waitForTimeout(1000);
-            
+
         await browser.close();
 
         return {
