@@ -28,8 +28,8 @@ export async function registrarPonto(username: string, url: string, latitude?: s
 
         const context = await browser.newContext({
             geolocation: {
-                latitude: latitude,
-                longitude: longitude,
+                latitude: latitude as unknown as number,
+                longitude: longitude as unknown as number,
             },
             permissions: ['geolocation'],
         });
