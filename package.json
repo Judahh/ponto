@@ -3,7 +3,7 @@
         "node": "22.x"
     },
     "scripts": {
-        "build": "tsc && npx playwright install",
+        "build": " npx playwright install-deps && tsc && npx playwright install",
         "dev": "",
         "start": "vercel dev"
     },
