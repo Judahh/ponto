@@ -69,10 +69,16 @@ export async function registrarPonto(username: string, url: string, latitude?: s
 
         console.log('div.alert.alert-success.growl-animated');
 
-        const confirmation = await page.waitForSelector('div.alert.alert-success.growl-animated', {
-            state: 'visible',
-            timeout: 20000, // 20 seconds
-        });
+        // wait for the element to be visible
+        // <div data-growl="container" class="alert alert-success gro wl-animated animated fadeInDown" role="alert" data-growl-position="top-right" style="position: fixed; margin: Opx; z-index: 1031; display: inline-block; top: 20px; right: 20 px;">@</div>
+        const confirmation = await page.waitForSelector('div.alert.alert-success.growl-animated', { timeout: 10000 })
+            .then((el: any) => el.innerText)
+            .catch(() => {
+                return 'Erro ao registrar ponto';
+            });
+        console.log('confirmation', confirmation);
+        // await page.waitForTimeout(1000);
+            
         await browser.close();
 
         return {
