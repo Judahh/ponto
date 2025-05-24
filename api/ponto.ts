@@ -29,6 +29,18 @@ export async function registrarPonto(username: string, url: string, latitude?: s
     const context = await browser.newContext();
     const page = (await context.newPage()) as any;
 
+    await page.route('**/*', (route: any) => {
+        if (
+            ['image', 'stylesheet', 'font'].includes(
+                route.request().resourceType()
+            )
+        ) {
+            route.abort();
+        } else {
+            route.continue();
+        }
+    });
+
     await page.evaluateOnNewDocument((lat?: string | number, lon?: string | number) => {
         // @ts-ignore
         (navigator as any).geolocation.getCurrentPosition = function (success: any) {
