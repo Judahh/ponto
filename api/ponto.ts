@@ -41,18 +41,18 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         }
     });
 
-    await page.evaluate((lat?: string | number, lon?: string | number) => {
+    await page.evaluate((o?: {lat?: string | number, lon?: string | number}) => {
         // @ts-ignore
         (navigator as any).geolocation.getCurrentPosition = function (success: any) {
           success({
             coords: {
-              latitude: lat,
-              longitude: lon,
+              latitude: o?.lat,
+              longitude: o?.lon,
               accuracy: 100
             }
           });
         };
-      }, latitude, longitude);
+      }, {latitude, longitude});
 
     await page.goto(url);
 
