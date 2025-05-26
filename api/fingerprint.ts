@@ -84,20 +84,37 @@ export async function registerFingerprint(username: string, url: string, latitud
             const growlAnimated = await page.waitForSelector('div.alert.alert-success.growl-animated', { timeout: 10000 });
             confirmation = await growlAnimated.innerText();
         } catch (error) {
+            console.log('Erro ao registrar ponto 1');
             try {
                 const textSelector = await page.waitForSelector(`text=${text}`, { timeout: 10000 });
                 confirmation = await textSelector.innerText();
             } catch (error) {
-                console.log('Erro ao register fingerprint 2');
+                console.log('Erro ao registrar ponto 2');
                 try {
                     const geoError = await page.$('div.alert.alert-danger.growl-animated');
                     if (geoError) {
                         error = await geoError.innerText();
                         console.log('Erro de geolocalização:', error);
+                        return {
+                            usuario: username,
+                            hora: agora,
+                            mensagem: `Erro de geolocalização: ${error}`,
+                            error: error
+                        };
                     }
-                    error = 'Erro ao register fingerprint:' + error;
+                    return {
+                        usuario: username,
+                        hora: agora,
+                        mensagem: `Erro ao registrar fingerprint: ${error}`,
+                        error: error
+                    };
                 } catch (error) {
-                    error = 'Erro ao register fingerprint';
+                    return {
+                        usuario: username,
+                        hora: agora,
+                        mensagem: `Erro ao registrar fingerprint: ${error}`,
+                        error: error
+                    };
                 }
                 
             }
@@ -113,7 +130,7 @@ export async function registerFingerprint(username: string, url: string, latitud
             return {
                 usuario: username,
                 hora: agora,
-                mensagem: `Erro ao register fingerprint: ${confirmation}`,
+                mensagem: `Erro ao registrar ponto: ${confirmation}`,
                 confirmacao: confirmation
             };
         }
@@ -123,7 +140,7 @@ export async function registerFingerprint(username: string, url: string, latitud
         return {
             usuario: username,
             hora: agora,
-            mensagem: `Registrando fingerprint às ${agora}`,
+            mensagem: `Registrado ponto às ${agora}`,
             confirmacao: confirmation
         };
 
@@ -131,7 +148,7 @@ export async function registerFingerprint(username: string, url: string, latitud
         return {
             usuario: username,
             hora: agora,
-            mensagem: `Erro ao register fingerprint: ${error.message}`,
+            mensagem: `Erro ao registrar ponto: ${error.message}`,
             error: error.stack
         };
     }
