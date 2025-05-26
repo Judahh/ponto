@@ -1,4 +1,5 @@
 {
+    "registry": "https://registry.npmjs.org",
     "engines": {
         "node": "22.x"
     },

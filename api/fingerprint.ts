@@ -70,7 +70,7 @@ export async function registerFingerprint(username: string, url: string, latitud
         console.log("password", password);
 
 
-        await page.keyboard.press('Enter');
+        // await page.keyboard.press('Enter');
 
         await page.waitForSelector('#btnRegistrar');
         await page.click('#btnRegistrar');
