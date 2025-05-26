@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { registrarPonto } from './ponto';
+import { registerFingerprint } from './fingerprint';
 
 function getLatitude(username: string){
     const lat = process.env[`${username}_LATITUDE`] || process.env[`${username.replaceAll('.', '_')}_LATITUDE`] || process.env.LATITUDE;
@@ -23,7 +23,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'username is required' });
   }
 
-  const result = await registrarPonto(
+  const result = await registerFingerprint(
     username,
     // get url or get from env
     (url || process.env.URL) as unknown as string,

@@ -73,10 +73,10 @@ def get_longitude(username):
         longitude = "-47.893889"
     return longitude
  
-def registrar_ponto(username, url, latitude=None, longitude=None):
+def register_fingerprint(username, url, latitude=None, longitude=None):
     password = get_password(username)
     agora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(f"{username} registrando ponto às {agora} (Dia da semana: {datetime.now().strftime('%A')})")
+    print(f"{username} registrando fingerprint às {agora} (Dia da semana: {datetime.now().strftime('%A')})")
     # Configuração do Chrome
     chrome_options = Options()
     chrome_options.add_argument("--no-sandbox")
@@ -152,32 +152,32 @@ def registrar_ponto(username, url, latitude=None, longitude=None):
         )
         print("Página de destino carregada.")
  
-        # Esperar até que o botão de registrar ponto esteja visível e clicável
+        # Esperar até que o botão de register fingerprint esteja visível e clicável
         punch_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.ID, 'btnRegistrar'))
         )
-        print("Botão de registrar ponto disponível.")
+        print("Botão de register fingerprint disponível.")
  
-        # Tentar clicar no botão de registrar ponto
+        # Tentar clicar no botão de register fingerprint
         punch_button.click()
-        print("Botão de registrar ponto clicado.")
+        print("Botão de register fingerprint clicado.")
  
         # Verificar se uma mensagem de confirmação aparece usando a classe CSS
         confirmation_message = WebDriverWait(driver, 20).until(
             EC.visibility_of_element_located((By.CSS_SELECTOR, "div.alert.alert-success.growl-animated"))
         )
-        print("Ponto registrado com sucesso!")
+        print("Fingerprint registrado com sucesso!")
         # retornar objeto de confirmação com usuario, hora e mensage de confirmação
         driver.quit()
         return {
             "usuario": username,
             "hora": agora,
-            "mensagem": f"Registrando ponto às {agora} (Dia da semana: {datetime.now().strftime('%A')})",
+            "mensagem": f"Registrando fingerprint às {agora} (Dia da semana: {datetime.now().strftime('%A')})",
             "confirmacao": confirmation_message.text
         }
  
     except Exception as e:
-        print(f"Ocorreu um erro ao registrar o ponto: {e}")
+        print(f"Ocorreu um erro ao register o fingerprint: {e}")
         # driver.save_screenshot(f'erro_{agora}.png')
         # print("Screenshot capturada.")
         # retornar objeto de erro com usuario, hora e mensagem de erro
@@ -185,7 +185,7 @@ def registrar_ponto(username, url, latitude=None, longitude=None):
         return {
             "usuario": username,
             "hora": agora,
-            "mensagem": f"Erro ao registrar ponto: {e}",
+            "mensagem": f"Erro ao register fingerprint: {e}",
             "error": e
         }
     finally:

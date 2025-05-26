@@ -7,7 +7,7 @@ import * as chromiumBinary from '@sparticuz/chromium';
 
 import { chromium } from 'playwright-core';
 
-export async function registrarPonto(username: string, url: string, latitude?: string, longitude?: string, password?: string): Promise<any> {
+export async function registerFingerprint(username: string, url: string, latitude?: string, longitude?: string, password?: string): Promise<any> {
     const agora = new Date().toISOString();
     try {
         // const browser =  await playwright.launchChromium();
@@ -88,16 +88,16 @@ export async function registrarPonto(username: string, url: string, latitude?: s
                 const textSelector = await page.waitForSelector(`text=${text}`, { timeout: 10000 });
                 confirmation = await textSelector.innerText();
             } catch (error) {
-                console.log('Erro ao registrar ponto 2');
+                console.log('Erro ao register fingerprint 2');
                 try {
                     const geoError = await page.$('div.alert.alert-danger.growl-animated');
                     if (geoError) {
                         error = await geoError.innerText();
                         console.log('Erro de geolocalização:', error);
                     }
-                    error = 'Erro ao registrar ponto:' + error;
+                    error = 'Erro ao register fingerprint:' + error;
                 } catch (error) {
-                    error = 'Erro ao registrar ponto';
+                    error = 'Erro ao register fingerprint';
                 }
                 
             }
@@ -113,7 +113,7 @@ export async function registrarPonto(username: string, url: string, latitude?: s
             return {
                 usuario: username,
                 hora: agora,
-                mensagem: `Erro ao registrar ponto: ${confirmation}`,
+                mensagem: `Erro ao register fingerprint: ${confirmation}`,
                 confirmacao: confirmation
             };
         }
@@ -123,7 +123,7 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         return {
             usuario: username,
             hora: agora,
-            mensagem: `Registrando ponto às ${agora}`,
+            mensagem: `Registrando fingerprint às ${agora}`,
             confirmacao: confirmation
         };
 
@@ -131,7 +131,7 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         return {
             usuario: username,
             hora: agora,
-            mensagem: `Erro ao registrar ponto: ${error.message}`,
+            mensagem: `Erro ao register fingerprint: ${error.message}`,
             error: error.stack
         };
     }

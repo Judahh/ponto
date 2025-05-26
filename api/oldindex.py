@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import json
-# import registrar_ponto
-from api.ponto import registrar_ponto
+# import register_fingerprint
+from api.fingerprint import register_fingerprint
 # import libs for query params
 
 class handler(BaseHTTPRequestHandler):
@@ -34,7 +34,7 @@ class handler(BaseHTTPRequestHandler):
             }
             self.wfile.write(json.dumps(response).encode('utf-8'))
             return
-        response = registrar_ponto(username=username, url=url, latitude=latitude, longitude=longitude)
+        response = register_fingerprint(username=username, url=url, latitude=latitude, longitude=longitude)
         # if has no error in response
         if response.get('error') is None:
             self.send_response(200)
