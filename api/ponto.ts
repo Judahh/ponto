@@ -7,12 +7,7 @@ import * as chromiumBinary from '@sparticuz/chromium';
 
 import { chromium } from 'playwright-core';
 
-function getPassword(username: string): string {
-    const password = process.env[username] || process.env[username.replaceAll('.', '_')];
-    return password || '';
-}
-
-export async function registrarPonto(username: string, url: string, latitude?: string, longitude?: string) {
+export async function registrarPonto(username: string, url: string, latitude?: string, longitude?: string, password?: string): Promise<any> {
     const agora = new Date().toISOString();
     try {
         // const browser =  await playwright.launchChromium();
@@ -67,8 +62,6 @@ export async function registrarPonto(username: string, url: string, latitude?: s
         await page.waitForSelector('#senha');
 
         console.log('Preenchendo o formulário...');
-
-        const password = getPassword(username);
 
         await page.fill('#usuario', username);
         await page.fill('#senha', password); // TODO: Obter dinamicamente
