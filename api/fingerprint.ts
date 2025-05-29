@@ -95,6 +95,7 @@ export async function registerFingerprint(username: string, url: string, latitud
                     if (geoError) {
                         error = await geoError.innerText();
                         console.log('Erro de geolocalização:', error);
+                        await browser.close();
                         return {
                             usuario: username,
                             hora: agora,
@@ -102,6 +103,7 @@ export async function registerFingerprint(username: string, url: string, latitud
                             error: error
                         };
                     }
+                    await browser.close();
                     return {
                         usuario: username,
                         hora: agora,
@@ -109,6 +111,7 @@ export async function registerFingerprint(username: string, url: string, latitud
                         error: error
                     };
                 } catch (error) {
+                    await browser.close();
                     return {
                         usuario: username,
                         hora: agora,
@@ -127,6 +130,7 @@ export async function registerFingerprint(username: string, url: string, latitud
 
         if (confirmation.includes('Erro') || error) {
             console.log('Erro');
+            await browser.close();
             return {
                 usuario: username,
                 hora: agora,
@@ -136,7 +140,6 @@ export async function registerFingerprint(username: string, url: string, latitud
         }
 
         await browser.close();
-
         return {
             usuario: username,
             hora: agora,
@@ -145,6 +148,7 @@ export async function registerFingerprint(username: string, url: string, latitud
         };
 
     } catch (error: any) {
+        await browser.close();
         return {
             usuario: username,
             hora: agora,
