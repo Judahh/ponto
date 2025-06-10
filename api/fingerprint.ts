@@ -85,16 +85,20 @@ export async function registerFingerprint(username: string, url: string, latitud
             confirmation = await growlAnimated.innerText();
         } catch (error) {
             console.log('Erro ao registrar ponto 1');
+            console.log((error));
+            
             try {
                 const textSelector = await page.waitForSelector(`text=${text}`, { timeout: 10000 });
                 confirmation = await textSelector.innerText();
             } catch (error) {
                 console.log('Erro ao registrar ponto 2');
+                console.log((error));
                 try {
                     const geoError = await page.$('div.alert.alert-danger.growl-animated');
                     if (geoError) {
                         error = await geoError.innerText();
                         console.log('Erro de geolocalização:', error);
+                        console.log((error));
                         await browser.close();
                         return {
                             usuario: username,
@@ -130,6 +134,7 @@ export async function registerFingerprint(username: string, url: string, latitud
 
         if (confirmation.includes('Erro') || error) {
             console.log('Erro');
+            console.log((error));
             await browser.close();
             return {
                 usuario: username,
@@ -149,6 +154,7 @@ export async function registerFingerprint(username: string, url: string, latitud
 
     } catch (error: any) {
         await browser.close();
+        console.log((error));
         return {
             usuario: username,
             hora: agora,
