@@ -9,13 +9,14 @@ import { chromium } from 'playwright-core';
 
 export async function registerFingerprint(username: string, url: string, latitude?: string, longitude?: string, password?: string): Promise<any> {
     const agora = new Date().toISOString();
+    let browser;
     try {
         // const browser =  await playwright.launchChromium();
 
         const executablePath = await chromiumBinary.executablePath();
 
         // launch browser with external Chromium
-        const browser = await chromium.launch({
+        browser = await chromium.launch({
             args: chromiumBinary.args,
             executablePath: executablePath,
             headless: true,
@@ -153,7 +154,7 @@ export async function registerFingerprint(username: string, url: string, latitud
         };
 
     } catch (error: any) {
-        await browser.close();
+        await browser?.close?.();
         console.log((error));
         return {
             usuario: username,
